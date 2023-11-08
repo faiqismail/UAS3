@@ -17,11 +17,13 @@ app.use(barangRouter);
 const gudangRouter = require('./routes/gudang');
 app.use(gudangRouter);
 
-const pegawaiRouter = require('./routes/pegawai');
-app.use(pegawaiRouter);
 
 const feedbackRouter = require('./routes/feedback');
 app.use(feedbackRouter);
+
+ // Import rute register dan login
+ const auth = require('./routes/auth/auth');
+ app.use('/api/auth', auth);
 
 app.listen(port, () => {
     console.log(`aplikasi berjalan di http:://localhost:${port}`);

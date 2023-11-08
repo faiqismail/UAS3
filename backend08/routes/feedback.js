@@ -23,8 +23,9 @@ router.get('/feedback', (req, res) => {
     });
 });
 
-// POST a new feedback with "date" set automatically
+// POST a new feedback with "date" and "nama_feedback" set automatically
 router.post('/feedback', [
+    body('nama_feedback').notEmpty(), // Menambahkan validasi untuk kolom 'nama_feedback' di atas 'email_pengirim'
     body('email_pengirim').isEmail(),
     body('keterangan').notEmpty(),
 ], (req, res) => {
@@ -41,6 +42,7 @@ router.post('/feedback', [
                        now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
 
     const Data = {
+        nama_feedback: req.body.nama_feedback, // Menggunakan nilai dari kolom 'nama_feedback' di atas 'email_pengirim'
         email_pengirim: req.body.email_pengirim,
         keterangan: req.body.keterangan,
         date: jakartaTime, // Menggunakan tanggal dan waktu yang telah diambil
@@ -62,9 +64,9 @@ router.post('/feedback', [
     });
 });
 
-
 // PATCH/update an existing feedback
 router.patch('/feedback/:id', [
+    body('nama_feedback').notEmpty(), // Menambahkan validasi untuk kolom 'nama_feedback' di atas 'email_pengirim'
     body('email_pengirim').isEmail(),
     body('keterangan').notEmpty(),
 ], (req, res) => {
@@ -76,10 +78,13 @@ router.patch('/feedback/:id', [
     }
     const id = req.params.id;
     const now = new Date();
+    const jakartaTime = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate() + ' ' +
+                       now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds(); // Definisikan ulang jakartaTime
     const Data = {
+        nama_feedback: req.body.nama_feedback, // Menggunakan nilai dari kolom 'nama_feedback' di atas 'email_pengirim'
         email_pengirim: req.body.email_pengirim,
         keterangan: req.body.keterangan,
-        date: now, // Menggunakan tanggal dan waktu saat ini
+        date: jakartaTime, // Menggunakan tanggal dan waktu saat ini yang telah didefinisikan ulang
     };
     connection.query(`UPDATE feedback SET ? WHERE id_feedback = ${id}`, Data, (err, result) => {
         if (err) {

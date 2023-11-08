@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 04 Nov 2023 pada 14.27
+-- Waktu pembuatan: 08 Nov 2023 pada 16.59
 -- Versi server: 10.4.27-MariaDB
 -- Versi PHP: 8.2.0
 
@@ -54,6 +54,7 @@ INSERT INTO `barang` (`id_barang`, `id_gudang`, `nomer_barcode`, `nama_produk`, 
 
 CREATE TABLE `feedback` (
   `id_feedback` int(11) NOT NULL,
+  `nama_feedback` varchar(225) NOT NULL,
   `email_pengirim` varchar(255) NOT NULL,
   `keterangan` varchar(255) NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -63,8 +64,9 @@ CREATE TABLE `feedback` (
 -- Dumping data untuk tabel `feedback`
 --
 
-INSERT INTO `feedback` (`id_feedback`, `email_pengirim`, `keterangan`, `date`) VALUES
-(4, 'faiq@gmail.com', 'mie ini terlalu enak', '2023-11-04 13:19:23');
+INSERT INTO `feedback` (`id_feedback`, `nama_feedback`, `email_pengirim`, `keterangan`, `date`) VALUES
+(5, 'faiq ismail', 'faiq@gmail.com', 'mie ini terlalu enak', '2023-11-08 13:20:51'),
+(6, 'faiqkun', 'faiqkun@gmail.com', 'mie ini terlalu enak', '2023-11-08 15:56:03');
 
 -- --------------------------------------------------------
 
@@ -92,17 +94,17 @@ INSERT INTO `gudang` (`id_gudang`, `nama_gudang`) VALUES
 
 CREATE TABLE `register_pegawai` (
   `id_register_pegawai` int(11) NOT NULL,
-  `nama` varchar(255) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `username` varchar(100) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `token` varchar(225) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data untuk tabel `register_pegawai`
 --
 
-INSERT INTO `register_pegawai` (`id_register_pegawai`, `nama`, `email`, `password`) VALUES
-(1, 'admin', 'admin@gmail.com', 'admin');
+INSERT INTO `register_pegawai` (`id_register_pegawai`, `username`, `password`, `token`) VALUES
+(4, 'admin', 'admin', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsInVzZXJuYW1lIjoiYWRtaW4iLCJpYXQiOjE2OTk0NTc2MTN9.i2sz3gGCLTSl0gUA9eJ_9slqVDy2yBbzbzo0DyOTWWo');
 
 --
 -- Indexes for dumped tables
@@ -147,7 +149,7 @@ ALTER TABLE `barang`
 -- AUTO_INCREMENT untuk tabel `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `id_feedback` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_feedback` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `gudang`
@@ -159,7 +161,7 @@ ALTER TABLE `gudang`
 -- AUTO_INCREMENT untuk tabel `register_pegawai`
 --
 ALTER TABLE `register_pegawai`
-  MODIFY `id_register_pegawai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_register_pegawai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)

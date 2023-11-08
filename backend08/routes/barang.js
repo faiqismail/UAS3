@@ -24,6 +24,7 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({ storage: storage, fileFilter: fileFilter });
+const authenticateToken = require('../routes/auth/midleware/authenticateToken')
 
 router.get('/barang/data', (req, res) => {
     connection.query('SELECT b.id_barang, b.id_gudang, b.nomer_barcode, b.nama_produk, b.ket_produk, b.foto_produk, b.stok_produk, b.harga, g.nama_gudang FROM barang b JOIN gudang g ON b.id_gudang = g.id_gudang ORDER BY b.id_barang DESC;', (err, rows) => {
@@ -56,7 +57,7 @@ router.get('/barang/data', (req, res) => {
 
 
 
-router.post('/barang', upload.fields([{ name: 'foto_produk', maxCount: 1 }]), [
+router.post('/barang',authenticateToken, upload.fields([{ name: 'foto_produk', maxCount: 1 }]), [
     body('id_gudang').notEmpty().withMessage('Field id_gudang harus diisi'),
     body('nomer_barcode').notEmpty().withMessage('Field nomer_barcode harus diisi'),
     body('nama_produk').notEmpty().withMessage('Field nama_produk harus diisi'),
@@ -97,7 +98,7 @@ router.post('/barang', upload.fields([{ name: 'foto_produk', maxCount: 1 }]), [
     });
 });
 
-router.get('/barang/:nomer_barcode', (req, res) => {
+router.get('/barang/:nomer_barcode',authenticateToken, (req, res) => {
     let nomerBarcode = req.params.nomer_barcode;
     connection.query('SELECT b.id_barang, g.nama_gudang, b.nomer_barcode, b.nama_produk, b.ket_produk, b.foto_produk, b.stok_produk, b.harga FROM barang b JOIN gudang g ON b.id_gudang = g.id_gudang WHERE b.nomer_barcode = ?;', [nomerBarcode], (err, rows) => {
         if (err) {
@@ -134,7 +135,7 @@ router.get('/barang/:nomer_barcode', (req, res) => {
 
 
 router.patch(
-    "/barang/:id",
+    "/barang/:id",authenticateToken,
     upload.single("foto_produk"),
     [
         body('id_gudang').notEmpty().withMessage('Field id_gudang harus diisi'),
@@ -218,7 +219,7 @@ router.patch(
     }
 );
 
-router.delete('/barang/:id', (req, res) => {
+router.delete('/barang/:id',authenticateToken, (req, res) => {
     const id = req.params.id;
 
     connection.query(`SELECT * FROM barang WHERE id_barang = ${id}`, (err, rows) => {

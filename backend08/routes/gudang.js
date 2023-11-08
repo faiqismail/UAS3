@@ -5,7 +5,9 @@ const { body, validationResult } = require('express-validator');
 // import database
 const connection = require('../config/db');
 
-router.get('/gudang', function (req, res) {
+const authenticateToken = require('../routes/auth/midleware/authenticateToken')
+
+router.get('/gudang',authenticateToken, function (req, res) {
     connection.query('SELECT * FROM gudang ORDER BY id_gudang DESC', function (err, rows) {
         if (err) {
             console.error('Database error:', err);
@@ -24,7 +26,7 @@ router.get('/gudang', function (req, res) {
     });
 });
 
-router.post('/gudang', [
+router.post('/gudang',authenticateToken,  [
     // validation
     body('nama_gudang').notEmpty(),
 ], (req, res) => {
@@ -59,7 +61,7 @@ router.post('/gudang', [
 
 
 
-router.patch('/gudang/:id', [
+router.patch('/gudang/:id',authenticateToken,  [
     body('nama_gudang').notEmpty(),
 ], (req, res) => {
     const errors = validationResult(req);
@@ -87,7 +89,7 @@ router.patch('/gudang/:id', [
     });
 });
 
-router.delete('/gudang/(:id)', function (req, res) {
+router.delete('/gudang/(:id)',authenticateToken,  function (req, res) {
     const id = req.params.id;
     connection.query(`DELETE FROM gudang WHERE id_gudang = ${id}`, function (err, result) {
         if (err) {
