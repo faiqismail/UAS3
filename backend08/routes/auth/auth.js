@@ -48,7 +48,7 @@ router.post('/login', (req, res) => {
       return res.status(500).json({ error: 'Server Error' });
     }
     if (results.length === 0) {
-      return res.status(401).json({ error: 'Gagal masuk' });
+      return res.status(401).json({ error: 'Gagal ' });
     }
     const user = results[0];
     if (user.password !== password) {
